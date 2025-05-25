@@ -9,6 +9,9 @@ This is a Next.js template for Meta Business Messaging Tech Providers. It provid
 - User authentication via Auth0
 - Meta Business Manager integration
 
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fklyngbaek%2Fbizmsgtp&env=AUTH0_SECRET,AUTH0_BASE_URL,AUTH0_ISSUER_BASE_URL,AUTH0_CLIENT_ID,AUTH0_CLIENT_SECRET,META_APP_ID,META_APP_SECRET,FB_APP_SECRET,FB_SUAT,FB_REG_PIN,FB_VERIFY_TOKEN,FB_ADMIN_SUAT,ABLY_KEY&envDescription=Variables%20to%20configure%20the%20app&envLink=https%3A%2F%2Fgithub.com%2Fklyngbaek%2Fbizmsgtp)
+
 ## Quick Start
 
 1. Clone this template:
@@ -25,14 +28,27 @@ npm install
 3. Set up environment variables:
 Create a `.env.local` file with the following variables:
 ```env
+# Auth0 Configuration
 AUTH0_SECRET='your-auth0-secret'
 AUTH0_BASE_URL='http://localhost:3000'
 AUTH0_ISSUER_BASE_URL='https://your-tenant.auth0.com'
 AUTH0_CLIENT_ID='your-auth0-client-id'
 AUTH0_CLIENT_SECRET='your-auth0-client-secret'
+
+# Meta/WhatsApp Configuration
 META_APP_ID='your-meta-app-id'
 META_APP_SECRET='your-meta-app-secret'
+FB_APP_SECRET='your-facebook-app-secret'
+FB_SUAT='your-facebook-system-user-access-token'
+FB_REG_PIN='your-registration-pin'
+FB_VERIFY_TOKEN='your-webhook-verify-token'
+FB_ADMIN_SUAT='your-admin-system-user-access-token'
+
+# Ably Configuration
+ABLY_KEY='your-ably-api-key'
 ```
+
+Note: Never commit the actual `.env.local` file to version control. Keep your secrets secure.
 
 4. Run the development server:
 ```bash
