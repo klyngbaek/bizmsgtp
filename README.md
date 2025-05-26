@@ -74,7 +74,7 @@ CREATE TABLE phones (
   waba_id BIGINT
 );
 
-CREATE TABLE waba (
+CREATE TABLE wabas (
   key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   waba_id BIGINT,
   user_id VARCHAR,
