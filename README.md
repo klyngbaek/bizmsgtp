@@ -12,6 +12,7 @@ This is a Next.js template for Meta Business Messaging Tech Providers. It provid
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fklyngbaek%2Fbizmsgtp&env=AUTH0_SECRET,AUTH0_BASE_URL,AUTH0_ISSUER_BASE_URL,AUTH0_CLIENT_ID,AUTH0_CLIENT_SECRET,META_APP_ID,META_APP_SECRET,FB_APP_SECRET,FB_SUAT,FB_REG_PIN,FB_VERIFY_TOKEN,FB_ADMIN_SUAT,ABLY_KEY&envDescription=Variables%20to%20configure%20the%20app&envLink=https%3A%2F%2Fgithub.com%2Fklyngbaek%2Fbizmsgtp&products=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22neon%22%2C%22productSlug%22%3A%22neon%22%2C%22protocol%22%3A%22storage%22%2C%22group%22%3A%22postgres%22%7D%5D)
 
+
 ## Quick Start
 
 1. Clone this template:
@@ -25,7 +26,67 @@ cd my-meta-app
 npm install
 ```
 
-3. Set up environment variables:
+3. Configure Database Schema
+```
+CREATE TABLE ad_accounts (
+  key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  ad_account_id BIGINT,
+  user_id VARCHAR,
+  app_id BIGINT,
+  business_id BIGINT,
+  access_token TEXT,
+  last_updated TIMESTAMP,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE businesses (
+  key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  business_id BIGINT,
+  user_id VARCHAR,
+  app_id BIGINT,
+  access_token TEXT,
+  last_updated TIMESTAMP,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE logs (
+  key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  user_id VARCHAR,
+  action VARCHAR,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE pages (
+  key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  page_id BIGINT,
+  user_id VARCHAR,
+  app_id BIGINT,
+  business_id BIGINT,
+  access_token TEXT,
+  last_updated TIMESTAMP,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE phones (
+  key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  is_ack_bot_enabled TEXT,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  waba_id BIGINT
+);
+
+CREATE TABLE waba (
+  key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  waba_id BIGINT,
+  user_id VARCHAR,
+  app_id BIGINT,
+  business_id BIGINT,
+  access_token TEXT,
+  last_updated TIMESTAMP,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+4. Set up environment variables:
 Create a `.env.local` file with the following variables:
 ```env
 # Auth0 Configuration
@@ -50,7 +111,7 @@ ABLY_KEY='your-ably-api-key'
 
 Note: Never commit the actual `.env.local` file to version control. Keep your secrets secure.
 
-4. Run the development server:
+5. Run the development server:
 ```bash
 npm run dev
 ```
