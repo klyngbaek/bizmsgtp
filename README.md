@@ -10,7 +10,7 @@ This is a Next.js template for Meta Business Messaging Tech Providers. It provid
 - Meta Business Manager integration
 
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fklyngbaek%2Fbizmsgtp&env=AUTH0_SECRET,AUTH0_BASE_URL,AUTH0_ISSUER_BASE_URL,AUTH0_CLIENT_ID,AUTH0_CLIENT_SECRET,FB_APP_ID,FB_APP_SECRET,FB_REG_PIN,FB_SUAT,FB_TP_CONFIG_IDS,FB_VERIFY_TOKEN,FB_ADMIN_SUAT,ABLY_KEY&envDescription=Variables%20to%20configure%20the%20app&envLink=https%3A%2F%2Fgithub.com%2Fklyngbaek%2Fbizmsgtp&products=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22neon%22%2C%22productSlug%22%3A%22neon%22%2C%22protocol%22%3A%22storage%22%2C%22group%22%3A%22postgres%22%7D%5D)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fklyngbaek%2Fbizmsgtp&env=AUTH0_SECRET,AUTH0_BASE_URL,AUTH0_ISSUER_BASE_URL,AUTH0_CLIENT_ID,AUTH0_CLIENT_SECRET,FB_APP_ID,FB_APP_SECRET,FB_BUSINESS_ID,FB_GRAPH_API_VERSION,FB_REG_PIN,FB_TP_CONFIG_IDS,FB_VERIFY_TOKEN,ABLY_KEY&envDescription=Variables%20to%20configure%20the%20app&envLink=https%3A%2F%2Fgithub.com%2Fklyngbaek%2Fbizmsgtp&products=%5B%7B%22type%22%3A%22integration%22%2C%22integrationSlug%22%3A%22neon%22%2C%22productSlug%22%3A%22neon%22%2C%22protocol%22%3A%22storage%22%2C%22group%22%3A%22postgres%22%7D%5D)
 
 
 ## Quick Start
