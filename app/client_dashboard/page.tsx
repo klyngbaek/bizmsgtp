@@ -6,11 +6,8 @@ import { getAppDetails } from "@/app/api/be_utils";
 
 const { app_id, business_id, tp_configs, public_es_feature_options, public_es_versions, public_es_feature_types } = publicConfig;
 
-console.log('*************tp_configs', tp_configs);
-
 export default withPageAuthRequired(async function ClientDashBoardWrapper() {
 
-  console.log('*************tp_configs', publicConfig);
   const { user } = await getSession();
   const userId = user ? user.email : '';
 
