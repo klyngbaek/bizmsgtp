@@ -71,13 +71,12 @@ CREATE TABLE pages (
 );
 CREATE UNIQUE INDEX user_app_page_key on pages (user_id, app_id, page_id);
 
-
 CREATE TABLE phones (
   key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   phone_id BIGINT,
   is_ack_bot_enabled TEXT,
   last_updated TIMESTAMP,
-  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 CREATE UNIQUE INDEX phone_key on phones (phone_id)
 
