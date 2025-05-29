@@ -78,7 +78,7 @@ CREATE TABLE phones (
   last_updated TIMESTAMP,
   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-CREATE UNIQUE INDEX phone_key on phones (phone_id)
+CREATE UNIQUE INDEX phone_key on phones (phone_id);
 
 CREATE TABLE wabas (
   key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
