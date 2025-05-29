@@ -38,6 +38,8 @@ CREATE TABLE ad_accounts (
   last_updated TIMESTAMP,
   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE UNIQUE INDEX user_app_ad_account_key on ad_accounts (user_id, app_id, ad_account_id);
+
 
 CREATE TABLE businesses (
   key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -48,6 +50,7 @@ CREATE TABLE businesses (
   last_updated TIMESTAMP,
   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE UNIQUE INDEX user_app_business_key on businesses (user_id, app_id, business_id);
 
 CREATE TABLE logs (
   key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -66,15 +69,17 @@ CREATE TABLE pages (
   last_updated TIMESTAMP,
   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE UNIQUE INDEX user_app_page_key on pages (user_id, app_id, page_id);
+
 
 CREATE TABLE phones (
   key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   phone_id BIGINT,
   is_ack_bot_enabled TEXT,
-  waba_id BIGINT,
   last_updated TIMESTAMP,
   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
+CREATE UNIQUE INDEX phone_key on phones (phone_id)
 
 CREATE TABLE wabas (
   key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
@@ -86,6 +91,8 @@ CREATE TABLE wabas (
   last_updated TIMESTAMP,
   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+CREATE UNIQUE INDEX user_app_waba_key on wabas (user_id, app_id, waba_id);
+
 ```
 
 4. Set up environment variables:
