@@ -4,7 +4,7 @@ import Ably from "ably";
 import { getAckBotStatus, getTokenForWaba } from '@/app/api/be_utils';
 import privateConfig from '@/app/private_config';
 
-const { fb_verify_token, fb_admin_suat } = await privateConfig();
+const { fb_verify_token } = await privateConfig();
 
 export async function GET(request: NextRequest) {
 
