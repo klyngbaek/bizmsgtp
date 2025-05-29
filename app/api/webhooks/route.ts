@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
         && data.entry[0].changes[0].value.messages[0].type === "text"
         && data.entry[0].changes[0].value.messages[0].text) {
 
-        const waba_id = data.id;
+        const waba_id = data.entry[0].id;
         const access_token = await getTokenForWaba(waba_id);
 
         console.log("acking");
