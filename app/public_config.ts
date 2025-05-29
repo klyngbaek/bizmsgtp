@@ -3,7 +3,6 @@ const publicConfig =
     "app_id": process.env.FB_APP_ID,
     "redirect_uri": "",
     "contact_email": process.env.CONTACT_EMAIL,
-    "system_user_id": process.env.FB_SYSTEM_USER_ID,
     "config_id": process.env.FB_TP_CONFIG_ID,
     "business_id": process.env.FB_BUSINESS_ID,
     "graph_api_version": process.env.FB_GRAPH_API_VERSION,

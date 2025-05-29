@@ -4,7 +4,7 @@ import getPrivateConfig from "../private_config";
 import publicConfig from "../public_config";
 import { sql } from '@vercel/postgres';
 
-const { graph_api_version, system_user_id, redirect_uri } = publicConfig;
+const { graph_api_version, redirect_uri } = publicConfig;
 
 export async function getToken(code: string, app_id: string) {
     const privateConfig = await getPrivateConfig();
@@ -285,22 +285,6 @@ export async function getTokenForWaba(waba_id: string) {
 export async function getTokensForUserId(user_id: string) {
     const { rows } = await sql`SELECT DISTINCT ON (waba_id) access_token, waba_id FROM wabas WHERE user_id = ${user_id}`;
     return rows;
-}
-
-export async function addUser(waba_id: string) {
-    const privateConfig = await getPrivateConfig();
-    const { fb_suat: suat } = privateConfig;
-    console.log('addUser:', 'waba_id', waba_id, 'suat', suat, 'user_id', system_user_id);
-    const url = `https://graph.facebook.com/${graph_api_version}/${waba_id}/assigned_users?user=${system_user_id}&tasks=['MANAGE']&access_token=${suat}`;
-    return fetch(url, {
-        method: 'POST'
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('addUserResponse', 'waba_id', waba_id, 'suat', suat, 'user_id', user_id, 'data', data);
-            if (data.error) throw data.error;
-            return data;
-        })
 }
 
 //////////////////////////////////////////////////////////

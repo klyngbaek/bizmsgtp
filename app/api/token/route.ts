@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
-import { getToken, saveTokens, addUser, registerNumber, subscribeWebhook } from "../be_utils"
+import { getToken, saveTokens, registerNumber, subscribeWebhook } from "../be_utils"
 import { wrapFn, skipProm } from "../../errorformat";
 import { withApiAuthRequired, getSession } from '@auth0/nextjs-auth0';
 
@@ -35,7 +35,7 @@ export const POST = withApiAuthRequired(async function myApiRoute(request: NextR
                         .then(response => [{ fun, status, result: '***', error }, response]);
 
                 }),
-            (es_option_sys) ? wrapFn(addUser(waba_id), "addUser") : skipProm('addUser'),
+            // (es_option_sys) ? wrapFn(addUser(waba_id), "addUser") : skipProm('addUser'),
             // (es_option_loc) ? wrapFn(shareLoc(waba_id), "shareLoc") : skipProm('shareLoc')
         ])
 
