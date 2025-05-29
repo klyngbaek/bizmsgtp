@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'; // static by default, unless reading the request
 import { NextResponse, type NextRequest } from 'next/server'
 import Ably from "ably";
-import { getAckBotStatus } from '@/app/api/be_utils';
+import { getAckBotStatus, getTokenForWaba } from '@/app/api/be_utils';
 import privateConfig from '@/app/private_config';
 
 const { fb_verify_token, fb_admin_suat } = await privateConfig();
@@ -52,9 +52,11 @@ export async function POST(request: NextRequest) {
         && data.entry[0].changes[0].value.messages[0].type === "text"
         && data.entry[0].changes[0].value.messages[0].text) {
 
+        const waba_id = data.id;
+        const access_token = await getTokenForWaba(waba_id);
+
         console.log("acking");
 
-        const access_token = fb_admin_suat;
         const recipient = data.entry[0].changes[0].value.messages[0].from; // extract the phone number from the webhook payload
         const msg_body = data.entry[0].changes[0].value.messages[0].text.body; // extract the message text from the webhook payload
         const phone_number_id = data.entry[0].changes[0].value.metadata.phone_number_id; // extract the phone number id from the webhook payload

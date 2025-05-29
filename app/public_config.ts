@@ -30,14 +30,14 @@ const publicConfig =
     ],
     "public_es_feature_types": {
         "v2": [
-            "coexistence",
+            "whatsapp_business_app_onboarding",
             "only_waba_sharing"
         ],
         "v3-alpha-1": [
-            "coexistence",
+            "whatsapp_business_app_onboarding",
         ],
         "v3": [
-            "coexistence",
+            "whatsapp_business_app_onboarding",
             "api_access_only"
         ],
     },

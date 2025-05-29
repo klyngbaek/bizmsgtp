@@ -69,9 +69,11 @@ CREATE TABLE pages (
 
 CREATE TABLE phones (
   key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  phone_id BIGINT,
   is_ack_bot_enabled TEXT,
+  waba_id BIGINT,
+  last_updated TIMESTAMP,
   ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  waba_id BIGINT
 );
 
 CREATE TABLE wabas (

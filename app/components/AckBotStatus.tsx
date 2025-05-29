@@ -3,7 +3,7 @@
 import { feGraphApiPostWrapper } from '@/app/fe_utils';
 import { useState } from 'react';
 
-export default function AckBotStatus({ phone, color }) {
+export default function AckBotStatus({ phone }) {
     const [isAckBotEnabled, setIsAckBotEnabled] = useState(phone.isAckBotEnabled);
     const [isLoading, setIsLoading] = useState(false);
 

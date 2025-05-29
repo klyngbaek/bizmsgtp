@@ -475,7 +475,7 @@ async function graphApiWrapperPost(url: string, accessToken: string, params = {}
 //////////////////////////////////////////////////////////
 
 export async function getAckBotStatus(phoneId: string): Promise<boolean> {
-    const { rows } = await sql`SELECT is_ack_bot_enabled FROM phones WHERE id = ${phoneId}`;
+    const { rows } = await sql`SELECT is_ack_bot_enabled FROM phones WHERE phone_id = ${phoneId}`;
     const isAckBotEnabled = rows[0]?.is_ack_bot_enabled === 'true';
     return isAckBotEnabled;
 }
@@ -483,9 +483,9 @@ export async function getAckBotStatus(phoneId: string): Promise<boolean> {
 export async function setAckBotStatus(phoneId: string, isAckBotEnabled: boolean) {
     console.log('isAckBotEnabled', isAckBotEnabled);
     return await sql`
-        INSERT INTO phones (id, is_ack_bot_enabled)
+        INSERT INTO phones (phone_id, is_ack_bot_enabled)
         VALUES (${phoneId}, ${isAckBotEnabled})
-        ON CONFLICT (id)
+        ON CONFLICT (phone_id)
         DO UPDATE SET is_ack_bot_enabled = EXCLUDED.is_ack_bot_enabled
     `;
 }
