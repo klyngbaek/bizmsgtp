@@ -7,6 +7,9 @@ interface Waba {
   name?: string;
   business_id: string;
   status: string;
+  on_behalf_of_business_info?: {
+    id: string;
+  };
 }
 
 export default withPageAuthRequired(async function MyWabas() {

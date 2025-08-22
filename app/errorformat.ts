@@ -1,6 +1,6 @@
 const arrow_right = " \u{2192} ";
 const arrow_down = " \u{21B3} ";
-const arrow_up = " ^ "
+// const arrow_up = " ^ "
 
 function spacer(size, char = ' ') {
     let str = "";
@@ -10,6 +10,7 @@ function spacer(size, char = ' ') {
     return str;
 }
 
+// UNUSED CODE - COMMENTED OUT
 // const promSucc = () => new Promise(function (resolve, _reject) {
 //     resolve("it worked!");
 // });
@@ -52,7 +53,6 @@ function spacer(size, char = ' ') {
 //             ])),
 //         w(promSucc, 'ninja0')()
 //     ]);
-
 
 // const exd = [
 //     [
@@ -111,7 +111,6 @@ function spacer(size, char = ' ') {
 //     ]
 // ];
 
-
 // const example_data = [
 //     [
 //         { fun: "getToken", status: "completed" }, [
@@ -127,6 +126,7 @@ function spacer(size, char = ' ') {
 //     [{ fun: "addUser", status: "completed" }],
 // ];
 
+// USED FUNCTIONS - KEEP THESE
 function parseP(str, indent, parallel) {
     parallel.forEach(function (serial, i) {
         if (i === 0) {
@@ -183,6 +183,7 @@ function w(promise, label) {
     };
 }
 
+// UNUSED FUNCTION - COMMENTED OUT
 // function w3(promise, label) {
 //     return (prev_result) => {
 //         const arg = prev_result[prev_result.length - 1] ? prev_result[prev_result.length - 1].result : undefined;
@@ -196,178 +197,172 @@ function skipProm(label) {
     return [{ fun: label, status: "skipped", result: null, error: null }]
 }
 
-
+// EXPORT ONLY THE FUNCTIONS THAT ARE ACTUALLY USED
 export { formatErrors };
 export { w };
 export { wrapFn };
 export { skipProm };
 
+// UNUSED COMPLEX PARSING FUNCTIONS - COMMENTED OUT
+// function parseP2(str, indent, parallel, _currentRow, potEnd, _postdent, isEnd) {
+//     const { maxWidth } = maxWidthP(parallel, '');
+//     let totalRows = 0;
+//     parallel.forEach(function (serial, i) {
+//         const { s_str, maxRows } = parseS2("", indent, serial, i, potEnd, maxWidth, isEnd);
+//         totalRows += maxRows;
+//         str += s_str;
+//     });
+//     return { p_str: str, totalRows };
+// }
+
+// function parseS2(str, indent, serial, rowInParent, potEnd, parentMaxWidth, isParentEnd) {
+//     let maxRows = 1;
+//     const { width } = widthS(serial, '');
+//     serial.forEach(function (serialItem, i) {
+
+//         // item is an array
+//         if (Array.isArray(serialItem)) {
+//             const isEnd2 = serial.length - 1 === i;
+//             const { p_str, totalRows } = parseP2("", indent, serialItem, null, potEnd, parentMaxWidth, isEnd2);
+//             if (totalRows > maxRows) {
+//                 maxRows = totalRows;
+//             }
+//             str += p_str;
+
+//             // you got to the end but it's an array, nest into the next one
+//             if (i === serial.length - 1) {
+//             }
+//         }
+
+//         // item is a node
+//         else {
+
+//             // if first item
+//             if (i === 0 && rowInParent === 0) {
+//                 str += arrow_right;
+//             }
+//             else if (i === 0 && rowInParent > 0) {
+//                 str += indent + arrow_down;
+//             }
+
+//             // if no the first item
+//             else if (i > 0) {
+//                 str += arrow_right;
+//             }
+
+//             const content = toString(serialItem);
+//             str += content;
+//             indent += spacer(content.length + 3);
+
+//             // if last item of serial that's the end of the row
+//             if (i === serial.length - 1) {
+//                 if (isParentEnd) {
+//                     const delta = parentMaxWidth - width;
+//                     const b = spacer(delta);
+//                     str += b + parentMaxWidth + ':' + width;
+//                     str += "END\n";
+//                 }
+//             }
+//         }
+//     });
+//     return { s_str: str, maxRows };
+// }
+
+// UNUSED GRAPH FUNCTIONS - COMMENTED OUT
+// const graph = []; // rows
+
+// function maxWidthP(parallel, str, globalIndent, rowOfParent, isEndInParentSeries) {
+//     let maxWidthSoFar = 0;
+//     let maxStringSoFar = null;
+//     let rowsSoFar = 0;
+//     const { maxWidth } = OmaxWidthP(parallel, str);
+//     parallel.forEach((item, index) => {
+//         const { width, string, rows } = widthS(item, str, globalIndent, rowOfParent + rowsSoFar, index, isEndInParentSeries, maxWidth);
+//         rowsSoFar += rows;
+//         if (maxWidthSoFar < width) {
+//             maxWidthSoFar = width;
+//             maxStringSoFar = string;
+//         }
+//     });
+//     return { maxWidth: maxWidthSoFar, maxString: maxStringSoFar, totalRows: rowsSoFar };
+// }
+
+// function widthS(serial, str, indentOfParent, globalRow, rowInParentParallel, isEndParentParallel, parentWidth) {
+//     let widthSoFar = 0;
+//     let stringSoFar = '';
+//     let maxRows = 1;
+//     serial.forEach((item, index) => {
+//         const currentIndent = widthSoFar + indentOfParent;
+//         const isCurrentEnd = index === serial.length - 1;
+
+//         // array split
+//         if (Array.isArray(item)) {
+//             const { maxWidth, maxString, totalRows } = maxWidthP(item, str, currentIndent, globalRow, isCurrentEnd);
+//             widthSoFar += maxWidth;
+//             stringSoFar += maxString;
+//             if (totalRows > maxRows) {
+//                 maxRows = totalRows;
+//             }
+//         }
+
+//         // node
+//         else {
+
+//             let pre_buffer = 0;
+//             if (index === 0 && rowInParentParallel > 0) {
+//                 pre_buffer = currentIndent;
+//             }
+
+//             const itemString = toString(item);
+//             widthSoFar += itemString.length + 3;
+//             stringSoFar += itemString + ' > ';
+
+
+//             let pre_symbol = arrow_right;
+//             if (rowInParentParallel > 0 && index === 0) {
+//                 pre_symbol = arrow_down;
+//             }
+//             let is_end = false;
+//             if ((isEndParentParallel && isCurrentEnd && rowInParentParallel === 0) || (isCurrentEnd && rowInParentParallel > 0)) {
+//                 is_end = true;
+//             }
+//             if (isCurrentEnd && rowInParentParallel > 0 && !isEndParentParallel) {
+//                 const maxRows = OwidthS(serial.slice(index), '').rows;
+//                 console.log('!!!!! ', + maxRows + ' ' + rowInParentParallel);
+//                 if (maxRows >= rowInParentParallel) {
+//                     is_end = false;
+//                 }
+//             }
+
+
+//             let post_symbol = "";
+//             if (isCurrentEnd && rowInParentParallel > 0 && !isEndParentParallel) {
+//                 post_symbol = arrow_up;
+//             }
+//             let post_buffer = 0;
+//             if (isCurrentEnd) {
+//                 post_buffer = parentWidth - widthSoFar;
+//             }
 
 
 
+//             if (!graph[globalRow]) graph[globalRow] = [];
+//             graph[globalRow].push({ currentIndent, globalRow, itemString, pre_symbol, is_end, post_symbol, post_buffer, pre_buffer, is_last_parallel: isEndParentParallel });
+//         }
+//     });
+//     return { width: widthSoFar, string: stringSoFar, rows: maxRows };
+// }
 
+// function toString(node) {
+//     return `${node.status} (${node.fun})`
+// }
 
-function parseP2(str, indent, parallel, _currentRow, potEnd, _postdent, isEnd) {
-    const { maxWidth, _maxString } = maxWidthP(parallel, '');
-    let totalRows = 0;
-    parallel.forEach(function (serial, i) {
-        const { s_str, maxRows } = parseS2("", indent, serial, i, potEnd, maxWidth, isEnd);
-        totalRows += maxRows;
-        str += s_str;
-    });
-    return { p_str: str, totalRows };
-}
-
-function parseS2(str, indent, serial, rowInParent, potEnd, parentMaxWidth, isParentEnd) {
-    let maxRows = 1;
-    const { width } = widthS(serial, '');
-    serial.forEach(function (serialItem, i) {
-
-        // item is an array
-        if (Array.isArray(serialItem)) {
-            const isEnd2 = serial.length - 1 === i;
-            const { p_str, totalRows } = parseP2("", indent, serialItem, null, potEnd, parentMaxWidth, isEnd2);
-            if (totalRows > maxRows) {
-                maxRows = totalRows;
-            }
-            str += p_str;
-
-            // you got to the end but it's an array, nest into the next one
-            if (i === serial.length - 1) {
-            }
-        }
-
-        // item is a node
-        else {
-
-            // if first item
-            if (i === 0 && rowInParent === 0) {
-                str += arrow_right;
-            }
-            else if (i === 0 && rowInParent > 0) {
-                str += indent + arrow_down;
-            }
-
-            // if no the first item
-            else if (i > 0) {
-                str += arrow_right;
-            }
-
-            const content = toString(serialItem);
-            str += content;
-            indent += spacer(content.length + 3);
-
-            // if last item of serial that's the end of the row
-            if (i === serial.length - 1) {
-                if (isParentEnd) {
-                    const delta = parentMaxWidth - width;
-                    const b = spacer(delta);
-                    str += b + parentMaxWidth + ':' + width;
-                    str += "END\n";
-                }
-            }
-        }
-    });
-    return { s_str: str, maxRows };
-}
-
-const graph = []; // rows
-
-function maxWidthP(parallel, str, globalIndent, rowOfParent, isEndInParentSeries) {
-    let maxWidthSoFar = 0;
-    let maxStringSoFar = null;
-    let rowsSoFar = 0;
-    const { maxWidth } = OmaxWidthP(parallel, str);
-    parallel.forEach((item, index) => {
-        const { width, string, rows } = widthS(item, str, globalIndent, rowOfParent + rowsSoFar, index, isEndInParentSeries, maxWidth);
-        rowsSoFar += rows;
-        if (maxWidthSoFar < width) {
-            maxWidthSoFar = width;
-            maxStringSoFar = string;
-        }
-    });
-    return { maxWidth: maxWidthSoFar, maxString: maxStringSoFar, totalRows: rowsSoFar };
-}
-
-function widthS(serial, str, indentOfParent, globalRow, rowInParentParallel, isEndParentParallel, parentWidth) {
-    let widthSoFar = 0;
-    let stringSoFar = '';
-    let maxRows = 1;
-    serial.forEach((item, index) => {
-        const currentIndent = widthSoFar + indentOfParent;
-        const isCurrentEnd = index === serial.length - 1;
-
-        // array split
-        if (Array.isArray(item)) {
-            const { maxWidth, maxString, totalRows } = maxWidthP(item, str, currentIndent, globalRow, isCurrentEnd);
-            widthSoFar += maxWidth;
-            stringSoFar += maxString;
-            if (totalRows > maxRows) {
-                maxRows = totalRows;
-            }
-        }
-
-        // node
-        else {
-
-            let pre_buffer = 0;
-            if (index === 0 && rowInParentParallel > 0) {
-                pre_buffer = currentIndent;
-            }
-
-            const itemString = toString(item);
-            widthSoFar += itemString.length + 3;
-            stringSoFar += itemString + ' > ';
-
-
-            let pre_symbol = arrow_right;
-            if (rowInParentParallel > 0 && index === 0) {
-                pre_symbol = arrow_down;
-            }
-            let is_end = false;
-            if ((isEndParentParallel && isCurrentEnd && rowInParentParallel === 0) || (isCurrentEnd && rowInParentParallel > 0)) {
-                is_end = true;
-            }
-            if (isCurrentEnd && rowInParentParallel > 0 && !isEndParentParallel) {
-                const maxRows = OwidthS(serial.slice(index), '').rows;
-                console.log('!!!!! ', + maxRows + ' ' + rowInParentParallel);
-                if (maxRows >= rowInParentParallel) {
-                    is_end = false;
-                }
-            }
-
-
-            let post_symbol = "";
-            if (isCurrentEnd && rowInParentParallel > 0 && !isEndParentParallel) {
-                post_symbol = arrow_up;
-            }
-            let post_buffer = 0;
-            if (isCurrentEnd) {
-                post_buffer = parentWidth - widthSoFar;
-            }
-
-
-
-            if (!graph[globalRow]) graph[globalRow] = [];
-            graph[globalRow].push({ currentIndent, globalRow, itemString, pre_symbol, is_end, post_symbol, post_buffer, pre_buffer, is_last_parallel: isEndParentParallel });
-        }
-    });
-    return { width: widthSoFar, string: stringSoFar, rows: maxRows };
-}
-
-function toString(node) {
-    return `${node.status} (${node.fun})`
-}
-
-
-
+// UNUSED FORMATTING FUNCTIONS - COMMENTED OUT
 // function formatErrors2(data) {
 //     return parseP2("", "", data, 0, true, '', false)
 // };
 
-
-
-
+// UNUSED TEST CODE - COMMENTED OUT
 // exd2.then(data => {
 //     // console.log(JSON.stringify(data, null, 2));
 //     // console.log(formatErrors(data));
@@ -376,55 +371,50 @@ function toString(node) {
 //     console.log(formatter(graph));
 // });
 
+// UNUSED OPTIMIZED FUNCTIONS - COMMENTED OUT
+// function OmaxWidthP(parallel, str) {
+//     let maxWidth = 0;
+//     let maxString = null;
+//     let rowsSoFar = 0;
+//     parallel.forEach((item, _index) => {
+//         const { width, string, rows } = OwidthS(item, str);
+//         rowsSoFar += rows;
+//         if (maxWidth < width) {
+//             maxWidth = width;
+//             maxString = string;
+//         }
+//     });
+//     return { maxWidth, maxString, totalRows: rowsSoFar };
+// }
+
+// function OwidthS(serial, str) {
+//     let widthSoFar = 0;
+//     let stringSoFar = '';
+//     let maxRows = 1;
+//     serial.forEach((item, _index) => {
 
 
+//         // array split
+//         if (Array.isArray(item)) {
+//             const { maxWidth, maxString, totalRows } = OmaxWidthP(item, str);
+//             widthSoFar += maxWidth;
+//             stringSoFar += maxString;
+//             if (totalRows > maxRows) {
+//                 maxRows = totalRows;
+//             }
+//         }
 
+//         // node
+//         else {
+//             const itemString = toString(item);
+//             widthSoFar += itemString.length + 3;
+//             stringSoFar += itemString + ' > ';
+//         }
+//     });
+//     return { width: widthSoFar, string: stringSoFar, rows: maxRows };
+// }
 
-
-
-function OmaxWidthP(parallel, str) {
-    let maxWidth = 0;
-    let maxString = null;
-    let rowsSoFar = 0;
-    parallel.forEach((item, _index) => {
-        const { width, string, rows } = OwidthS(item, str);
-        rowsSoFar += rows;
-        if (maxWidth < width) {
-            maxWidth = width;
-            maxString = string;
-        }
-    });
-    return { maxWidth, maxString, totalRows: rowsSoFar };
-}
-
-function OwidthS(serial, str) {
-    let widthSoFar = 0;
-    let stringSoFar = '';
-    let maxRows = 1;
-    serial.forEach((item, _index) => {
-
-
-        // array split
-        if (Array.isArray(item)) {
-            const { maxWidth, maxString, totalRows } = OmaxWidthP(item, str);
-            widthSoFar += maxWidth;
-            stringSoFar += maxString;
-            if (totalRows > maxRows) {
-                maxRows = totalRows;
-            }
-        }
-
-        // node
-        else {
-            const itemString = toString(item);
-            widthSoFar += itemString.length + 3;
-            stringSoFar += itemString + ' > ';
-        }
-    });
-    return { width: widthSoFar, string: stringSoFar, rows: maxRows };
-}
-
-
+// UNUSED FORMATTER FUNCTION - COMMENTED OUT
 // function formatter(data) {
 //     let str = '';
 //     let pre_buffer = 0;

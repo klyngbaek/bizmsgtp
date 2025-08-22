@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack --experimental-https",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "lint:all": "npm run lint && npm run type-check"
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^3.5.0",

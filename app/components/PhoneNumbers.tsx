@@ -34,8 +34,8 @@ export default function PhoneNumbers({ phones }) {
                             {phone.display_phone_number}
                         </div>
                         <div className='flex mb-1 items-center'>
-                            <PhoneStatus phone={phone} color={color} />
-                            <AckBotStatus phone={phone} color={color} />
+                            <PhoneStatus phone={phone} />
+                            <AckBotStatus phone={phone} />
                             <div className={`w-24 text-center rounded-md px-2 py-1 mr-1 text-xs flex items-center justify-center h-8 ${phone.is_on_biz_app ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'}`}>
                                 {phone.is_on_biz_app ? "SMB" : "ENTERPRISE"}
                             </div>

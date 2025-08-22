@@ -173,21 +173,6 @@ export async function getWabaDetails(wabaId: string, accessToken: string) {
         })
 };
 
-export async function getTokenDetails(access_token: string, suat: string) {
-    return fetch(`https://graph.facebook.com/${graph_api_version}/debug_token?input_token=${access_token}`, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${suat}`
-        },
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('getTokenDetailsResponse', 'access_token', access_token, 'suat', suat, data);
-            return data.data;
-        });
-}
-
 export async function getSubscribedApps(wabaId: string, accessToken: string) {
     console.log('getSubscribedApps', 'wabaId', wabaId, 'access_token', accessToken);
     const url = `/${wabaId}/subscribed_apps`;
@@ -223,18 +208,6 @@ export async function getClientWabas(user_id: string) {
 
     return wabas;
 }
-
-export async function getLoCInfo(businessId: string) {
-    const privateConfig = await getPrivateConfig();
-    const { fb_suat } = privateConfig;
-    console.log('getLoCInfo', 'business_id', businessId);
-    const url = `/${businessId}/client_whatsapp_business_accounts?fields=account_review_status,purchase_order_number,audiences,name,ownership_type,subscribed_apps,business_verification_status,country,currency,timezone_id,on_behalf_of_business_info,schedules,is_enabled_for_insights,dcc_config,message_templates,phone_numbers`;
-    return graphApiWrapperGet(url, fb_suat)
-        .then(data => {
-            console.log('getAllSharedWabasResponse', 'businessId', businessId, 'suat', fb_suat, 'data', JSON.stringify(data, null, 2));
-            return data.data;
-        });
-};
 
 //////////////////////////////////////////////////////////
 // WABA Details /\
@@ -475,15 +448,43 @@ export async function setAckBotStatus(phoneId: string, isAckBotEnabled: boolean)
 }
 
 export async function getAppDetails(app_id: string) {
-    const privateConfig = await getPrivateConfig();
-    const { fb_suat: suat } = privateConfig;
-    console.log('getBusinessIdForApp:', 'app_id', app_id, 'access_token', suat);
+    console.log('getBusinessIdForApp:', 'app_id', app_id);
     const url = `/${app_id}?fields=client_config,name,logo_url,app_domains,app_type,company,link`;
-    // const url = `/${app_id}/permissions`;
-    return graphApiWrapperGet(url, suat)
+    return graphApiWrapperGet(url)
         .then(data => {
             console.log('getAppDetailsResponse:', 'app_id', app_id, 'data', data);
             if (data.error) throw data.error;
             return data;
         });
 }
+
+//////////////////////////////////////////////////////////
+// Archive of SUAT based features
+//////////////////////////////////////////////////////////
+
+// export async function getTokenDetails(access_token: string, suat: string) {
+//     return fetch(`https://graph.facebook.com/${graph_api_version}/debug_token?input_token=${access_token}`, {
+//         method: 'GET',
+//         headers: {
+//             "Content-Type": "application/json",
+//             "Authorization": `Bearer ${suat}`
+//         },
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             console.log('getTokenDetailsResponse', 'access_token', access_token, 'suat', suat, data);
+//             return data.data;
+//         });
+// }
+
+// export async function getLoCInfo(businessId: string) {
+//     const privateConfig = await getPrivateConfig();
+//     const { fb_suat } = privateConfig;
+//     console.log('getLoCInfo', 'business_id', businessId);
+//     const url = `/${businessId}/client_whatsapp_business_accounts?fields=account_review_status,purchase_order_number,audiences,name,ownership_type,subscribed_apps,business_verification_status,country,currency,timezone_id,on_behalf_of_business_info,schedules,is_enabled_for_insights,dcc_config,message_templates,phone_numbers`;
+//     return graphApiWrapperGet(url, fb_suat)
+//         .then(data => {
+//             console.log('getAllSharedWabasResponse', 'businessId', businessId, 'suat', fb_suat, 'data', JSON.stringify(data, null, 2));
+//             return data.data;
+//         });
+// };
