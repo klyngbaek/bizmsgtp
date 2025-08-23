@@ -30,20 +30,28 @@ export default withPageAuthRequired(async function MyWabas() {
       <Header user_id={userId} />
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">My WhatsApp Business Accounts</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="space-y-4">
           {wabas.map((waba: Waba) => (
-            <div key={waba.id} className="border rounded-lg p-4 hover:bg-gray-50">
-              <h2 className="text-lg font-semibold">{waba.name || 'Unnamed WABA'}</h2>
-              <p className="text-sm text-gray-500">ID: {waba.id}</p>
-              <p className="text-sm text-gray-500">Business ID: {waba?.on_behalf_of_business_info?.id}</p>
-              <a
-                href={`https://business.facebook.com/latest/settings/whatsapp_account?business_id=${waba.on_behalf_of_business_info?.id}&waba_id=${waba.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-blue-700"
-              >
-                View in Business Manager
-              </a>
+            <div key={waba.id} className="border rounded-lg p-6 hover:bg-gray-50 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <h2 className="text-xl font-semibold mb-2">{waba.name || 'Unnamed WABA'}</h2>
+                  <div className="space-y-1">
+                    <p className="text-sm text-gray-600">ID: {waba.id}</p>
+                    <p className="text-sm text-gray-600">Business ID: {waba?.on_behalf_of_business_info?.id}</p>
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <a
+                    href={`https://business.facebook.com/latest/settings/whatsapp_account?business_id=${waba.on_behalf_of_business_info?.id}&waba_id=${waba.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    View in Business Manager
+                  </a>
+                </div>
+              </div>
             </div>
           ))}
         </div>

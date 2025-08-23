@@ -21,22 +21,30 @@ export default withPageAuthRequired(async function MyPages() {
       <Header user_id={user_id} />
       <div className="p-4">
         <h1 className="text-2xl font-bold mb-4">My Facebook Pages</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="space-y-4">
           {pagesWithNames.map((page: Page) => (
-            <div key={page.page_id} className="border rounded-lg p-4 hover:bg-gray-50">
-              <h2 className="text-lg font-semibold">{page.name || 'Unnamed Page'}</h2>
-              <p className="text-sm text-gray-500">ID: {page.page_id}</p>
-              {page.ad_campaign && (
-                <p className="text-sm text-gray-500">Ad Campaign: {page.ad_campaign}</p>
-              )}
-              <a
-                href={`https://www.facebook.com/${page.page_id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:text-blue-700"
-              >
-                View on Facebook
-              </a>
+            <div key={page.page_id} className="border rounded-lg p-6 hover:bg-gray-50 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <h2 className="text-xl font-semibold mb-2">{page.name || 'Unnamed Page'}</h2>
+                  <div className="space-y-1">
+                    <p className="text-sm text-gray-600">ID: {page.page_id}</p>
+                    {page.ad_campaign && (
+                      <p className="text-sm text-gray-600">Ad Campaign: {page.ad_campaign}</p>
+                    )}
+                  </div>
+                </div>
+                <div className="ml-4">
+                  <a
+                    href={`https://www.facebook.com/${page.page_id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    View on Facebook
+                  </a>
+                </div>
+              </div>
             </div>
           ))}
         </div>
