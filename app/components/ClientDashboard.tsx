@@ -213,67 +213,146 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
                     <TpButton href={`client_dashboard/my_inbox`} title="My Inbox" subtitle={"Send and receive messages across all your phone numbers"} />
                 </div>
 
-                <div className="mr-5 mb-0 rounded-lg border border-transparent px-5 py-4 border-gray-300 bg-gray-100 text-xs">
+                <div className="mr-5 mb-0 rounded-lg border border-gray-200 px-6 py-6 bg-white shadow-sm text-sm min-w-[400px]">
+                    {/* App Information Section */}
+                    <div className="mb-6">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-4">App Information</h2>
+                        <div className="space-y-3">
+                            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span className="font-medium text-gray-700">App ID:</span>
+                                <a
+                                    target="_blank"
+                                    href={`https://developers.facebook.com/apps/${app_id}`}
+                                    className="text-blue-600 hover:text-blue-800 font-mono text-sm"
+                                >
+                                    {app_id}
+                                </a>
+                            </div>
+                            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span className="font-medium text-gray-700">BM ID:</span>
+                                <a
+                                    target="_blank"
+                                    href={`https://business.facebook.com/latest/settings/whatsapp_account?business_id=${bm_id}`}
+                                    className="text-blue-600 hover:text-blue-800 font-mono text-sm"
+                                >
+                                    {bm_id}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Server Options Section */}
+                    <div className="mb-6">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-4">Server Options</h2>
+                        <div className="space-y-4">
+                            {is_loc_enabled && (
+                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                    <label className="font-medium text-gray-700">Share LoC</label>
+                                    <input
+                                        type="checkbox"
+                                        checked={es_option_loc}
+                                        onChange={(e) => setEs_option_locSetter(e.target.checked)}
+                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                    />
+                                </div>
+                            )}
+                            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <label className="font-medium text-gray-700">Register Number</label>
+                                <input
+                                    type="checkbox"
+                                    checked={es_option_reg}
+                                    onChange={(e) => setEs_option_regSetter(e.target.checked)}
+                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                />
+                            </div>
+                            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <label className="font-medium text-gray-700">Subscribe Webhooks</label>
+                                <input
+                                    type="checkbox"
+                                    checked={es_option_sub}
+                                    onChange={(e) => setEs_option_sub(e.target.checked)}
+                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* ES Options Section */}
+                    <div className="mb-6">
+                        <h2 className="text-lg font-semibold text-gray-900 mb-4">ES Options</h2>
+                        <div className="space-y-4">
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">ES Version</label>
+                                <select
+                                    value={esOptionVersion}
+                                    onChange={(e) => { console.log(e.target.value); setEsOptionVersionSetter(e.target.value) }}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                >
+                                    {public_es_versions.map((version) => (
+                                        <option key={version} value={version}>{version}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">ES Feature Type</label>
+                                <select
+                                    value={esOptionFeatureType}
+                                    onChange={(e) => { console.log(e.target.value); setEsOptionFeatureTypeSetter(e.target.value) }}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                >
+                                    {
+                                        public_es_feature_types[esOptionVersion].map((featureType) => (
+                                            <option key={featureType} value={featureType}>{featureType}</option>
+                                        ))
+                                    }
+                                    <option value="">none</option>
+                                </select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">ES Features</label>
+                                <select
+                                    multiple={true}
+                                    value={esOptionFeatures}
+                                    onChange={handleOptionChange}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white min-h-[80px]"
+                                >
+                                    {
+                                        public_es_feature_options[esOptionVersion].map((feature) => (
+                                            <option key={feature} value={feature}>{feature}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="block text-sm font-medium text-gray-700">TP Config</label>
+                                <select
+                                    onChange={(e) => { console.log(e.target.value); setEsOptionConfigSetter(e.target.value) }}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                                >
+                                    {
+                                        tp_configs.map((config) => (
+                                            <option key={config} value={config}>{config}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Resulting JSON Section */}
                     <div>
-                        <h1>App ID: <a target="_blank" href={`https://developers.facebook.com/apps/${app_id}`}>{app_id}</a></h1>
-                        <h1>BM ID: <a target="_blank" href={`https://business.facebook.com/latest/settings/whatsapp_account?business_id=${bm_id}`}>{bm_id}</a></h1>
+                        <h2 className="text-lg font-semibold text-gray-900 mb-4">Resulting JSON</h2>
+                        <textarea
+                            value={esConfig}
+                            onChange={(e) => { setEsConfig(e.target.value) }}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white font-mono text-xs resize-none"
+                            rows={12}
+                            placeholder="ES configuration will appear here..."
+                        />
                     </div>
-                    <br />
-                    {is_loc_enabled ? <div className="align-middle"><label>Share LoC <input type="checkbox" checked={es_option_loc} onChange={(e) => setEs_option_locSetter(e.target.checked)}></input></label></div> : null}
-
-                    <b>Server Options</b>
-                    <div className="align-middle"><label>Register Number <input type="checkbox" checked={es_option_reg} onChange={(e) => setEs_option_regSetter(e.target.checked)}></input></label></div>
-                    <div className="align-middle"><label>Subscribe Webhooks <input type="checkbox" checked={es_option_sub} onChange={(e) => setEs_option_sub(e.target.checked)}></input></label></div>
-
-                    <br />
-
-                    <div><b>ES Options</b></div>
-                    <div>[OPTIONS]</div>
-                    <div className="align-middle">
-                        <label>ES Version =
-                            <select value={esOptionVersion} onChange={(e) => { console.log(e.target.value); setEsOptionVersionSetter(e.target.value) }}>
-                                {public_es_versions.map((version) => (
-                                    <option key={version} value={version}>{version}</option>
-                                ))}
-                            </select>
-                        </label>
-                        <br />
-                        <label>ES FeatureType =
-                            <select value={esOptionFeatureType} onChange={(e) => { console.log(e.target.value); setEsOptionFeatureTypeSetter(e.target.value) }}>
-                                {
-                                    public_es_feature_types[esOptionVersion].map((featureType) => (
-                                        <option key={featureType} value={featureType}>{featureType}</option>
-                                    ))
-                                }
-                                <option value="">none</option>
-                            </select>
-                        </label>
-                    </div>
-                    <div className="align-middle">
-                        <label>ES Features =
-                            <select multiple={true} value={esOptionFeatures} onChange={handleOptionChange}>
-                                {
-                                    public_es_feature_options[esOptionVersion].map((feature) => (
-                                        <option key={feature} value={feature}>{feature}</option>
-                                    ))
-                                }
-                            </select>
-                        </label>
-                    </div>
-                    <div className="align-middle">
-                        <label>TP Config =
-                            <select onChange={(e) => { console.log(e.target.value); setEsOptionConfigSetter(e.target.value) }}>
-                                {
-                                    tp_configs.map((config) => (
-                                        <option key={config} value={config}>{config}</option>
-                                    ))
-                                }
-                            </select>
-                        </label>
-                    </div>
-                    <br />
-                    <div>[RESULTING JSON]</div>
-                    <textarea cols={30} rows={20} value={esConfig} onChange={(e) => { setEsConfig(e.target.value) }} />
                 </div>
                 <div className="mr-5 mb-0 rounded-lg border border-transparent px-5 py-4 border-gray-300 bg-gray-100 text-xs">
                     <TpButton onClick={launchWhatsAppSignup(esConfig)} title="Launch FBL4B" subtitle={`Share your Meta assets with ${app_name}`} />
