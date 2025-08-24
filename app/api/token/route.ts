@@ -16,7 +16,7 @@ export const POST = withApiAuthRequired(async function myApiRoute(request: NextR
 
     console.log("/token", "incoming data", data);
 
-    const { code, waba_id, waba_ids, business_id, ad_account_ids, page_ids, app_id, phone_number_id, es_option_reg, es_option_loc, es_option_sys, es_option_sub } = data;
+    const { code, waba_id, waba_ids, business_id, ad_account_ids, page_ids, dataset_ids, catalog_ids, instagram_account_ids, app_id, phone_number_id, es_option_reg, es_option_loc, es_option_sys, es_option_sub } = data;
 
     console.log("/token", "waba_ids", waba_ids, "app_id", app_id, "phone_number_id", phone_number_id, "es_option_reg", es_option_reg, "es_option_loc", es_option_loc, "es_option_sys", es_option_sys, "es_option_sub", es_option_sub);
 
@@ -28,7 +28,7 @@ export const POST = withApiAuthRequired(async function myApiRoute(request: NextR
                 .then(([{ fun, status, result, error }]) => {
                     const access_token = result;
                     return Promise.all([
-                        wrapFn(saveTokens(user_id, app_id, business_id, page_ids, ad_account_ids, waba_ids, access_token), "saveTokens"),
+                        wrapFn(saveTokens(user_id, app_id, business_id, page_ids, ad_account_ids, waba_ids, dataset_ids, catalog_ids, instagram_account_ids, access_token), "saveTokens"),
                         (es_option_reg && phone_number_id) ? wrapFn(registerNumber(phone_number_id, access_token), "registerNumber") : skipProm('registerNumber'),
                         (es_option_sub) ? wrapFn(subscribeWebhook({ access_token: access_token, waba_id }), "subscribeWebhook") : skipProm('subscribeWebhook')
                     ])

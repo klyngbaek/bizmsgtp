@@ -103,6 +103,42 @@ CREATE TABLE phones (
 );
 CREATE UNIQUE INDEX phone_key on phones (phone_id);
 
+CREATE TABLE catalogs (
+  key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  catalog_id BIGINT,
+  user_id VARCHAR,
+  app_id BIGINT,
+  business_id BIGINT,
+  access_token TEXT,
+  last_updated TIMESTAMP,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE UNIQUE INDEX user_app_catalog_key on catalogs (user_id, app_id, catalog_id);
+
+CREATE TABLE instagram_accounts (
+  key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  instagram_account_id BIGINT,
+  user_id VARCHAR,
+  app_id BIGINT,
+  business_id BIGINT,
+  access_token TEXT,
+  last_updated TIMESTAMP,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE UNIQUE INDEX user_app_instagram_account_key on instagram_accounts (user_id, app_id, instagram_account_id);
+
+CREATE TABLE datasets (
+  key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  dataset_id BIGINT,
+  user_id VARCHAR,
+  app_id BIGINT,
+  business_id BIGINT,
+  access_token TEXT,
+  last_updated TIMESTAMP,
+  ts TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE UNIQUE INDEX user_app_dataset_key on datasets (user_id, app_id, dataset_id);
+
 CREATE TABLE wabas (
   key BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   waba_id BIGINT,

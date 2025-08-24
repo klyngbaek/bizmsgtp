@@ -63,6 +63,39 @@ export async function saveAdAccountToken(access_token: string, ad_account_id: st
     `;
 }
 
+export async function saveDatasetToken(access_token: string, dataset_id: string, app_id: string, user_id: string, business_id: string) {
+    console.log('saveDatasetToken:', 'access_token', access_token, 'dataset_id', dataset_id, 'app_id', app_id, 'business_id', business_id);
+
+    return await sql`
+        INSERT INTO datasets (user_id, app_id, dataset_id, access_token, business_id, last_updated)
+        VALUES (${user_id}, ${app_id}, ${dataset_id}, ${access_token}, ${business_id}, current_timestamp)
+        ON CONFLICT (user_id, app_id, dataset_id)
+        DO UPDATE SET access_token = EXCLUDED.access_token, business_id = EXCLUDED.business_id, last_updated=current_timestamp
+    `;
+}
+
+export async function saveCatalogToken(access_token: string, catalog_id: string, app_id: string, user_id: string, business_id: string) {
+    console.log('saveCatalogToken:', 'access_token', access_token, 'catalog_id', catalog_id, 'app_id', app_id, 'business_id', business_id);
+
+    return await sql`
+        INSERT INTO catalogs (user_id, app_id, catalog_id, access_token, business_id, last_updated)
+        VALUES (${user_id}, ${app_id}, ${catalog_id}, ${access_token}, ${business_id}, current_timestamp)
+        ON CONFLICT (user_id, app_id, catalog_id)
+        DO UPDATE SET access_token = EXCLUDED.access_token, business_id = EXCLUDED.business_id, last_updated=current_timestamp
+    `;
+}
+
+export async function saveInstagramAccountToken(access_token: string, instagram_account_id: string, app_id: string, user_id: string, business_id: string) {
+    console.log('saveInstagramAccountToken:', 'access_token', access_token, 'instagram_account_id', instagram_account_id, 'app_id', app_id, 'business_id', business_id);
+
+    return await sql`
+        INSERT INTO instagram_accounts (user_id, app_id, instagram_account_id, access_token, business_id, last_updated)
+        VALUES (${user_id}, ${app_id}, ${instagram_account_id}, ${access_token}, ${business_id}, current_timestamp)
+        ON CONFLICT (user_id, app_id, instagram_account_id)
+        DO UPDATE SET access_token = EXCLUDED.access_token, business_id = EXCLUDED.business_id, last_updated=current_timestamp
+    `;
+}
+
 export async function saveBusinessToken(access_token: string, business_id: string, app_id: string, user_id: string) {
     console.log('saveBusinessToken:', 'access_token', access_token, 'business_id', business_id, 'app_id', app_id);
 
@@ -74,7 +107,7 @@ export async function saveBusinessToken(access_token: string, business_id: strin
     `;
 }
 
-export async function saveTokens(user_id: string, app_id: string, business_id: string, page_ids: [string], ad_account_ids: [string], waba_ids: [string], access_token: string) {
+export async function saveTokens(user_id: string, app_id: string, business_id: string, page_ids: [string], ad_account_ids: [string], waba_ids: [string], dataset_ids: [string], catalog_ids: [string], instagram_account_ids: [string], access_token: string) {
     const promises = [];
     promises.push(saveBusinessToken(access_token, business_id, app_id, user_id));
     page_ids.forEach(page_id => {
@@ -85,6 +118,15 @@ export async function saveTokens(user_id: string, app_id: string, business_id: s
     });
     waba_ids.forEach(waba_id => {
         promises.push(saveWabaToken(access_token, waba_id, app_id, user_id, business_id));
+    });
+    dataset_ids.forEach(dataset_id => {
+        promises.push(saveDatasetToken(access_token, dataset_id, app_id, user_id, business_id));
+    });
+    catalog_ids.forEach(catalog_id => {
+        promises.push(saveCatalogToken(access_token, catalog_id, app_id, user_id, business_id));
+    });
+    instagram_account_ids.forEach(instagram_account_id => {
+        promises.push(saveInstagramAccountToken(access_token, instagram_account_id, app_id, user_id, business_id));
     });
     return Promise.all(promises);
 }
@@ -488,3 +530,127 @@ export async function getAppDetails(app_id: string) {
 //             return data.data;
 //         });
 // };
+
+//////////////////////////////////////////////////////////
+// Datasets
+//////////////////////////////////////////////////////////
+
+export async function getDatasets(user_id: string) {
+    // Get dataset IDs and access tokens from the database
+    const { rows } = await sql`
+    SELECT DISTINCT dataset_id, access_token 
+    FROM datasets 
+    WHERE user_id = ${user_id}
+    ORDER BY dataset_id ASC
+  `;
+
+    // Fetch dataset details from Facebook Graph API
+    const datasetsWithDetails = await Promise.all(
+        rows.map(async (dataset: any) => {
+            try {
+                const response = await fetch(
+                    `https://graph.facebook.com/${graph_api_version}/${dataset.dataset_id}?fields=name,code,last_fired_time&access_token=${dataset.access_token}`
+                );
+                const data = await response.json();
+                return {
+                    id: dataset.dataset_id,
+                    name: data.name || 'Unnamed Dataset',
+                    code: data.code || `fbq('init', '${dataset.dataset_id}');`,
+                    status: 'Active',
+                    last_fired_time: data.last_fired_time || null,
+                    access_token: dataset.access_token
+                };
+            } catch (error) {
+                console.error(`Error fetching details for dataset ${dataset.dataset_id}:`, error);
+                return {
+                    id: dataset.dataset_id,
+                    name: 'Error Loading dataset',
+                    code: `fbq('init', '${dataset.dataset_id}');`,
+                    status: 'Error',
+                    last_fired_time: null,
+                    access_token: dataset.access_token
+                };
+            }
+        })
+    );
+    return datasetsWithDetails;
+}
+
+//////////////////////////////////////////////////////////
+// Catalogs
+//////////////////////////////////////////////////////////
+
+export async function getCatalogs(user_id: string) {
+    // Get catalog IDs and access tokens from the database
+    const { rows } = await sql`
+    SELECT DISTINCT catalog_id, access_token 
+    FROM catalogs 
+    WHERE user_id = ${user_id}
+    ORDER BY catalog_id ASC
+  `;
+
+    // Fetch catalog details from Facebook Graph API
+    const catalogsWithDetails = await Promise.all(
+        rows.map(async (catalog: any) => {
+            try {
+                const response = await fetch(
+                    `https://graph.facebook.com/${graph_api_version}/${catalog.catalog_id}?fields=name&access_token=${catalog.access_token}`
+                );
+                const data = await response.json();
+                console.log('catalog!*!', data);
+                return {
+                    id: catalog.catalog_id,
+                    name: data.name || 'Unnamed Catalog!',
+                    access_token: catalog.access_token
+                };
+            } catch (error) {
+                console.error(`Error fetching details for catalog ${catalog.catalog_id}:`, error);
+                return {
+                    id: catalog.catalog_id,
+                    name: 'Error Loading Catalog',
+                    access_token: catalog.access_token
+                };
+            }
+        })
+    );
+    return catalogsWithDetails;
+}
+
+//////////////////////////////////////////////////////////
+// Instagram Accounts
+//////////////////////////////////////////////////////////
+
+export async function getInstagramAccounts(user_id: string) {
+    // Get Instagram account IDs and access tokens from the database
+    const { rows } = await sql`
+    SELECT DISTINCT instagram_account_id, access_token 
+    FROM instagram_accounts 
+    WHERE user_id = ${user_id}
+    ORDER BY instagram_account_id ASC
+  `;
+
+    // Fetch Instagram account details from Facebook Graph API
+    const instagramAccountsWithDetails = await Promise.all(
+        rows.map(async (account: any) => {
+            try {
+                const response = await fetch(
+                    `https://graph.facebook.com/${graph_api_version}/${account.instagram_account_id}?fields=ig_username&access_token=${account.access_token}`
+                );
+                const data = await response.json();
+                return {
+                    id: account.instagram_account_id,
+                    username: data.username || data.name || data.ig_username || 'unknown',
+                    access_token: account.access_token
+                };
+            } catch (error) {
+                console.error(`Error fetching details for Instagram account ${account.instagram_account_id}:`, error);
+                return {
+                    id: account.instagram_account_id,
+                    username: 'unknown',
+                    access_token: account.access_token
+                };
+            }
+        })
+    );
+    return instagramAccountsWithDetails;
+}

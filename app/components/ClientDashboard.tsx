@@ -12,6 +12,9 @@ let waba_ids_outer = null;
 let business_id_outer = null;
 let ad_account_ids_outer = null;
 let page_ids_outer = null;
+let dataset_ids_outer = null;
+let catalog_ids_outer = null;
+let instagram_account_ids_outer = null;
 let code_outer = null;
 
 export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enabled, user_id, tp_configs, public_es_feature_options, public_es_versions, public_es_feature_types }) {
@@ -83,9 +86,9 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
     // The returned code must be transmitted to your backend first and then
     // perform a server-to-server call from there to our servers for an access token.
 
-    const saveToken = (waba_id: string, code: string, phone_number_id: string, waba_ids: [string], business_id: string, ad_account_ids: [string], page_ids: [string]) => {
+    const saveToken = (waba_id: string, code: string, phone_number_id: string, waba_ids: [string], business_id: string, ad_account_ids: [string], page_ids: [string], dataset_ids: [string], catalog_ids: [string], instagram_account_ids: [string]) => {
         setBannerInfo('Setting up WABA...');
-        return feGraphApiPostWrapper('/api/token', { code, app_id, waba_id, waba_ids, business_id, ad_account_ids, page_ids, phone_number_id, es_option_loc, es_option_reg, es_option_sub, user_id })
+        return feGraphApiPostWrapper('/api/token', { code, app_id, waba_id, waba_ids, business_id, ad_account_ids, page_ids, dataset_ids, catalog_ids, instagram_account_ids, phone_number_id, es_option_loc, es_option_reg, es_option_sub, user_id })
             .then(d => {
                 const resp_msg = formatErrors(d);
                 setBannerInfo("WABA Setup Finished\n" + resp_msg + '\n')
@@ -97,7 +100,7 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
         if (response.authResponse) {
             const code = response.authResponse.code;
             code_outer = code;
-            if (waba_id_outer && code_outer) saveToken(waba_id_outer, code_outer, phone_number_id_outer, waba_ids_outer, business_id_outer, ad_account_ids_outer, page_ids_outer);
+            if (waba_id_outer && code_outer) saveToken(waba_id_outer, code_outer, phone_number_id_outer, waba_ids_outer, business_id_outer, ad_account_ids_outer, page_ids_outer, dataset_ids_outer, catalog_ids_outer, instagram_account_ids_outer);
         }
     }
 
@@ -144,7 +147,7 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
                 console.log("=== ES DATA ===");
                 console.log(data);
                 if (data.type === 'WA_EMBEDDED_SIGNUP') {
-                    const { phone_number_id, waba_id, waba_ids, business_id, ad_account_ids, page_id, page_ids } = data.data;
+                    const { phone_number_id, waba_id, waba_ids, business_id, ad_account_ids, page_id, page_ids, dataset_ids, catalog_ids, instagram_account_ids } = data.data;
 
                     // Exited ES early
                     if (data.data.current_step) {
@@ -160,9 +163,12 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
                         business_id_outer = business_id || [];
                         ad_account_ids_outer = ad_account_ids || [];
                         page_ids_outer = page_ids ? page_ids : (page_id ? [page_id] : []);
+                        dataset_ids_outer = dataset_ids ? dataset_ids : [];
+                        catalog_ids_outer = catalog_ids ? catalog_ids : [];
+                        instagram_account_ids_outer = instagram_account_ids ? instagram_account_ids : [];
                         console.log(data.data);
                         console.log('=== message session version ===\n', 'code_outer: ', code_outer, '\nwaba_id_outer:', waba_id_outer, '\nphone_number_id_outer:', phone_number_id_outer);
-                        if (waba_id_outer && code_outer) saveToken(waba_id_outer, code_outer, phone_number_id_outer, waba_ids_outer, business_id_outer, ad_account_ids_outer, page_ids_outer);
+                        if (waba_id_outer && code_outer) saveToken(waba_id_outer, code_outer, phone_number_id_outer, waba_ids_outer, business_id_outer, ad_account_ids_outer, page_ids_outer, dataset_ids_outer, catalog_ids_outer, instagram_account_ids_outer);
                     }
 
                 }
@@ -201,6 +207,9 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
                     <TpButton href={`client_dashboard/my_wabas`} title="My WABAs" subtitle={"View all your WABAs"} />
                     <TpButton href={`client_dashboard/my_pages`} title="My Pages" subtitle={"View all your Facebook Pages"} />
                     <TpButton href={`client_dashboard/my_ad_accounts`} title="My Ad Accounts" subtitle={"View all your Facebook Ad Accounts"} />
+                    <TpButton href={`client_dashboard/my_datasets`} title="My Datasets" subtitle={"View all your Facebook Datasets"} />
+                    <TpButton href={`client_dashboard/my_catalogs`} title="My Catalogs" subtitle={"View all your Facebook Catalogs"} />
+                    <TpButton href={`client_dashboard/my_instagram_accounts`} title="My Instagram" subtitle={"View all your Instagram Accounts"} />
                     <TpButton href={`client_dashboard/my_inbox`} title="My Inbox" subtitle={"Send and receive messages across all your phone numbers"} />
                 </div>
 
