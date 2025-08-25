@@ -204,7 +204,7 @@ export default function ClientDashboard({ app_id, app_name, bm_id, user_id, tp_c
                     <TpButton href={`client_dashboard/my_ad_accounts`} title="My Ad Accounts" subtitle={"View all your Facebook Ad Accounts"} />
                     <TpButton href={`client_dashboard/my_datasets`} title="My Datasets" subtitle={"View all your Facebook Datasets"} />
                     <TpButton href={`client_dashboard/my_catalogs`} title="My Catalogs" subtitle={"View all your Facebook Catalogs"} />
-                    <TpButton href={`client_dashboard/my_instagram_accounts`} title="My Instagram" subtitle={"View all your Instagram Accounts"} />
+                    <TpButton href={`client_dashboard/my_instagram_accounts`} title="My Instagram Accounts" subtitle={"View all your Instagram Accounts"} />
                     <TpButton href={`client_dashboard/my_inbox`} title="My Inbox" subtitle={"Send and receive messages across all your phone numbers"} />
                 </div>
 

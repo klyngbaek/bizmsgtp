@@ -9,6 +9,7 @@ interface Catalog {
     item_count?: number;
     last_updated?: string;
     status?: string;
+    access_token?: string; // Added access_token to the interface
 }
 
 export default withPageAuthRequired(async function MyCatalogs() {
@@ -36,6 +37,7 @@ export default withPageAuthRequired(async function MyCatalogs() {
                                         <h2 className="text-xl font-semibold mb-2">{catalog.name || 'Unnamed Catalog'}</h2>
                                         <div className="space-y-1">
                                             <p className="text-sm text-gray-600">ID: {catalog.id}</p>
+                                            <p className="text-sm text-gray-600">Access Token: <a href={`https://developers.facebook.com/tools/debug/accesstoken/?access_token=${catalog.access_token}&version=v23.0`} target="_blank" rel="noopener noreferrer"><span className="font-mono bg-gray-100 px-2 py-1 rounded text-xs">{catalog.access_token ? `${catalog.access_token.substring(0, 20)}...` : 'No token'}</span></a></p>
                                         </div>
                                     </div>
                                     <div className="ml-4">

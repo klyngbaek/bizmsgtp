@@ -11,6 +11,7 @@ interface InstagramAccount {
     account_type?: string;
     status?: string;
     connected_page_id?: string;
+    access_token?: string;
 }
 
 export default withPageAuthRequired(async function MyInstagramAccounts() {
@@ -39,6 +40,7 @@ export default withPageAuthRequired(async function MyInstagramAccounts() {
                                         <div className="space-y-1">
                                             <p className="text-sm text-gray-600">Username: @{account.username}</p>
                                             <p className="text-sm text-gray-600">ID: {account.id}</p>
+                                            <p className="text-sm text-gray-600">Access Token: <a href={`https://developers.facebook.com/tools/debug/accesstoken/?access_token=${account.access_token}&version=v23.0`} target="_blank" rel="noopener noreferrer"><span className="font-mono bg-gray-100 px-2 py-1 rounded text-xs">{account.access_token ? `${account.access_token.substring(0, 20)}...` : 'No token'}</span></a></p>
                                         </div>
                                     </div>
                                     <div className="ml-4 space-y-2">

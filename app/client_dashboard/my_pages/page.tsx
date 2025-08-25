@@ -32,6 +32,7 @@ export default withPageAuthRequired(async function MyPages() {
                     {page.ad_campaign && (
                       <p className="text-sm text-gray-600">Ad Campaign: {page.ad_campaign}</p>
                     )}
+                    <p className="text-sm text-gray-600">Access Token: <a href={`https://developers.facebook.com/tools/debug/accesstoken/?access_token=${page.access_token}&version=v23.0`} target="_blank" rel="noopener noreferrer"><span className="font-mono bg-gray-100 px-2 py-1 rounded text-xs">{page.access_token ? `${page.access_token.substring(0, 20)}...` : 'No token'}</span></a></p>
                   </div>
                 </div>
                 <div className="ml-4">

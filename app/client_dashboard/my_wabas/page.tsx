@@ -10,6 +10,7 @@ interface Waba {
   on_behalf_of_business_info?: {
     id: string;
   };
+  access_token?: string;
 }
 
 export default withPageAuthRequired(async function MyWabas() {
@@ -17,10 +18,14 @@ export default withPageAuthRequired(async function MyWabas() {
   const userId = user ? user.email : '';
   const tokens = await getTokensForUserId(userId);
 
-  const wabas = await Promise.all(tokens.map((row, _key) => {
+  const wabas = await Promise.all(tokens.map(async (row, _key) => {
     const waba_id = row.waba_id;
     const access_token = row.access_token;
-    return getWholeWaba(waba_id, access_token);
+    const wabaData = await getWholeWaba(waba_id, access_token);
+    return {
+      ...wabaData,
+      access_token: access_token
+    };
   }));
 
   console.log(wabas);
@@ -39,6 +44,7 @@ export default withPageAuthRequired(async function MyWabas() {
                   <div className="space-y-1">
                     <p className="text-sm text-gray-600">ID: {waba.id}</p>
                     <p className="text-sm text-gray-600">Business ID: {waba?.on_behalf_of_business_info?.id}</p>
+                    <p className="text-sm text-gray-600">Access Token: <a href={`https://developers.facebook.com/tools/debug/accesstoken/?access_token=${waba.access_token}&version=v23.0`} target="_blank" rel="noopener noreferrer"><span className="font-mono bg-gray-100 px-2 py-1 rounded text-xs">{waba.access_token ? `${waba.access_token.substring(0, 20)}...` : 'No token'}</span></a></p>
                   </div>
                 </div>
                 <div className="ml-4">

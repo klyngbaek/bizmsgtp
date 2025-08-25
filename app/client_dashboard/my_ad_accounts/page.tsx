@@ -28,6 +28,7 @@ export default withPageAuthRequired(async function MyAdAccounts() {
                   <h2 className="text-xl font-semibold mb-2">{account.name || 'Unnamed Account'}</h2>
                   <div className="space-y-1">
                     <p className="text-sm text-gray-600">ID: {account.ad_account_id}</p>
+                    <p className="text-sm text-gray-600">Access Token: <a href={`https://developers.facebook.com/tools/debug/accesstoken/?access_token=${account.access_token}&version=v23.0`} target="_blank" rel="noopener noreferrer"><span className="font-mono bg-gray-100 px-2 py-1 rounded text-xs">{account.access_token ? `${account.access_token.substring(0, 20)}...` : 'No token'}</span></a></p>
                   </div>
                 </div>
                 <div className="ml-4">
