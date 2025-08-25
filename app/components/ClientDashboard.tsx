@@ -17,7 +17,7 @@ let catalog_ids_outer = null;
 let instagram_account_ids_outer = null;
 let code_outer = null;
 
-export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enabled, user_id, tp_configs, public_es_feature_options, public_es_versions, public_es_feature_types }) {
+export default function ClientDashboard({ app_id, app_name, bm_id, user_id, tp_configs, public_es_feature_options, public_es_versions, public_es_feature_types }) {
 
 
     // es options
@@ -28,7 +28,6 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
 
     // server options
     const [es_option_reg, setEs_option_reg] = useState(true);
-    const [es_option_loc, setEs_option_loc] = useState(false);
     const [es_option_sub, setEs_option_sub] = useState(true);
 
     const computeEsConfig = (esOptionFeatureType, esOptionConfig, esOptionFeatures, esOptionVersion) => {
@@ -71,10 +70,6 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
         setEs_option_reg(es_option_regInner);
     }
 
-    const setEs_option_locSetter = (es_option_locInner) => {
-        setEs_option_loc(es_option_locInner);
-    }
-
     const setEsOptionVersionSetter = (esOptionVersion) => {
         setEsOptionVersion(esOptionVersion);
         setEsConfig(JSON.stringify(computeEsConfig(esOptionFeatureType, esOptionConfig, esOptionFeatures, esOptionVersion), null, 4));
@@ -88,7 +83,7 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
 
     const saveToken = (waba_id: string, code: string, phone_number_id: string, waba_ids: [string], business_id: string, ad_account_ids: [string], page_ids: [string], dataset_ids: [string], catalog_ids: [string], instagram_account_ids: [string]) => {
         setBannerInfo('Setting up WABA...');
-        return feGraphApiPostWrapper('/api/token', { code, app_id, waba_id, waba_ids, business_id, ad_account_ids, page_ids, dataset_ids, catalog_ids, instagram_account_ids, phone_number_id, es_option_loc, es_option_reg, es_option_sub, user_id })
+        return feGraphApiPostWrapper('/api/token', { code, app_id, waba_id, waba_ids, business_id, ad_account_ids, page_ids, dataset_ids, catalog_ids, instagram_account_ids, phone_number_id, es_option_reg, es_option_sub, user_id })
             .then(d => {
                 const resp_msg = formatErrors(d);
                 setBannerInfo("WABA Setup Finished\n" + resp_msg + '\n')
@@ -245,17 +240,6 @@ export default function ClientDashboard({ app_id, app_name, bm_id, is_loc_enable
                     <div className="mb-6">
                         <h2 className="text-lg font-semibold text-gray-900 mb-4">Server Options</h2>
                         <div className="space-y-4">
-                            {is_loc_enabled && (
-                                <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                                    <label className="font-medium text-gray-700">Share LoC</label>
-                                    <input
-                                        type="checkbox"
-                                        checked={es_option_loc}
-                                        onChange={(e) => setEs_option_locSetter(e.target.checked)}
-                                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
-                                    />
-                                </div>
-                            )}
                             <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                                 <label className="font-medium text-gray-700">Register Number</label>
                                 <input
